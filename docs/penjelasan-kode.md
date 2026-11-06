@@ -32,12 +32,24 @@
 
 - `class HomePage extends StatelessWidget` : Halaman Beranda. Masih Stateless karena tab ini sendiri belum punya data yang berubah
 - `Widget build(BuildContext context)` : Semua tampilan halaman ditulis di sini
-- `return const Center(child: Text('Beranda'));` : Sementara isi tengahnya teks saja. Tidak ada Scaffold di sini karena Scaffold milik MainScreen; HomePage hanya "isi" yang dipasang di body cangkang
+- `return const Center(child: Text('Beranda'));` : Versi Tahap 3 (sebelum ada desain). Kini HomePage sudah berisi tampilan lengkap — lihat section "Halaman Beranda (Tahap 4.1 & 4.2)" di bawah
 
-## pages/transaction.dart, budget.dart, settings.dart (placeholder)
+## pages/transaction.dart, budget.dart, settings.dart (kini halaman lengkap — Tahap 4.3)
 
-- `class TransactionPage extends StatelessWidget` : Halaman Transaksi, versi placeholder agar pergantian tab bisa diuji
-- `return const Center(child: Text('Halaman Transaksi'));` : Isi sementara. Pola sama untuk `BudgetPage` ('Halaman Anggaran') dan `SettingsPage` ('Halaman Settings')
+- Ketiganya kini berisi tampilan penuh sesuai desain PNG (Transaksi: segmented + isian; Anggaran: progress 65%; Pengaturan: switch, bintang, tentang). Istilah barunya ada di section "Kosakata Baru (Tahap 4.3 & 5)" di bawah
+
+## Kosakata Baru (Tahap 4.3 & 5)
+
+- `Widget _field(String label, String value, IconData? icon)` : Method bantuan biasa di dalam class yang MENGEMBALIKAN widget, dipanggil dari build() seperti `_field('Kategori', 'Makanan', Icons.keyboard_arrow_down)`. Blok "label + kotak isian" ditulis sekali, dipakai banyak kali
+- `Widget _item(...)` : Pola sama seperti `_field`, tapi menghasilkan satu baris transaksi + Divider. Halaman Riwayat memakainya: 6 baris data = 6 panggilan pendek
+- `if (icon != null) Icon(...)` : "Collection-if" — baris anak hanya tampil jika kondisinya benar. Inilah sebab parameter icon bertipe `IconData?` (boleh null): isian "Nominal" tanpa ikon, yang lain berikon
+- `IconData?` / `String?` : Tanda `?` berarti "boleh null" (boleh kosong). Tanpa `?`, parameter wajib diisi
+- `MaterialColor color` : Tipe parameter warna yang punya turunan terang/gelap, sehingga `color.shade50` bisa dipanggil dari isi parameter (hijau→hijau muda, oranye→oranye muda, otomatis konsisten)
+- `Switch(value: false, onChanged: (value) {})` : Sakelar Material 3; value = posisi on/off saat ini, onChanged = callback saat dipakai (masih callback kosong; logika mode gelap menyusul)
+- `List.generate(5, (index) { ... })` : Membuat 5 widget identik dengan menjalankan blok untuk tiap nomor 0–4; dipakai untuk 5 kotak bintang tanpa menyalin kode 5 kali
+- `IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back))` : Tombol khusus ikon tanpa teks; dipakai untuk panah kembali di halaman pendukung. onPressed akan diisi `Navigator.pop()` di Tahap 6
+- `Center(child: Text(..., textAlign: TextAlign.center))` : textAlign membuat teks panjang rata tengah di dalam kotaknya; dipakai untuk catatan kaki
+- `Scaffold` milik halaman pendukung (Riwayat/Tabungan) : Halaman di luar MainScreen wajib punya Scaffold sendiri (latar abu + isi) karena tidak "menumpang" di body cangkang — kebalikan dari halaman utama yang body-only
 
 ## pages/home.dart — Halaman Beranda (Tahap 4.1 & 4.2)
 
@@ -61,6 +73,24 @@
 - `ListTile(leading: ..., title: ..., subtitle: ..., trailing: ...)` : Baris daftar siap pakai; leading = widget di kiri (ikon dalam lingkaran Container), title = teks utama, subtitle = teks kecil di bawahnya, trailing = widget di ujung kanan (nominal + tanggal)
 - `trailing: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, ...)` : Dua baris teks di kanan; center agar sejajar vertikal dengan ikon, end agar angka/tanggal rata kanan
 - `Divider(height: 1, indent: 68, endIndent: 16)` : Garis pemisah tipis antar ListTile; indent = menjorok dari kiri agar garis mulai setelah ikon (16 padding + 40 ikon + 12 jarak)
+
+## pages/history.dart — Halaman Riwayat (Tahap 5)
+
+- `Scaffold(backgroundColor: Colors.grey.shade100, body: ListView(...))` : Halaman pendukung punya Scaffold sendiri (di luar MainScreen), lengkap dengan latarnya
+- `IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back))` : Panah kembali di top bar; masih callback kosong, diisi `Navigator.pop()` di Tahap 6
+- `Widget _item(String title, String category, String amount, String date, IconData icon, MaterialColor color)` : Method bantuan satu baris transaksi; dipanggil 6 kali untuk 6 data tanpa mengulang kode
+- `color.shade50` dari parameter `MaterialColor color` : Latar lingkaran ikon otomatis versi terang dari warna kategori (hijau→muda, oranye→muda)
+- Kartu ringkasan biru : "Oktober 2026" + dua kolom Expanded (Pemasukan hijau / Pengeluaran oranye), pola sama dengan Beranda
+- `Row(mainAxisAlignment: MainAxisAlignment.spaceBetween)` pada judul seksi : "Transaksi Oktober" di kiri, "Terbaru dahulu" di kanan
+
+## pages/savings.dart — Halaman Tabungan (Tahap 5)
+
+- `Scaffold` sendiri + top bar ← : Sama dengan Riwayat; halaman pendukung berdiri sendiri
+- `_field(...)` : Method bantuan isian yang sama persis dengan di TransactionPage (duplikat dulu, penyatuan menyusul)
+- Kartu tabungan terkumpul : ikon celeng hijau + angka besar + baris "dari target / % tercapai" + `LinearProgressIndicator(value: 0.25)` hijau
+- `ElevatedButton.icon(... 'Simpan tabungan')` : Tombol biru pil, `onPressed` masih kosong
+- Kartu hijau "Langkah kecil setiap bulan" : Container hijau berisi ikon + judul hijau + angka bulanan + dua paragraf penjelas (angka dummy, logika pembagian menyusul)
+- `Center(child: Text(..., textAlign: TextAlign.center))` : Catatan kaki rata tengah
 
 ## Konsep Dasar
 
