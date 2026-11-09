@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketwise/pages/budget.dart';
 import 'package:pocketwise/pages/home.dart';
 import 'package:pocketwise/pages/settings.dart';
+import 'package:pocketwise/pages/splash_page.dart';
 import 'package:pocketwise/pages/transaction.dart';
 
 void main() {
@@ -20,7 +21,7 @@ class PocketWiseApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: const MainScreen(),
+      home: const SplashPage(),
     );
   }
 }
@@ -61,7 +62,10 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Transaksi',
           ),
           NavigationDestination(icon: Icon(Icons.pie_chart), label: 'Anggaran'),
-          NavigationDestination(icon: Icon(Icons.settings), label: 'Pengaturan'),
+          NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: 'Pengaturan',
+          ),
         ],
       ),
     );
