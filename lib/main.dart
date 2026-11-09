@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      body: _pages[_selectedIndex],
+      body: SafeArea(child: _pages[_selectedIndex]),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (int index) {
@@ -55,13 +55,13 @@ class _MainScreenState extends State<MainScreen> {
           });
         },
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+          NavigationDestination(icon: Icon(Icons.home), label: 'Beranda'),
           NavigationDestination(
             icon: Icon(Icons.receipt_long),
-            label: 'Transaction',
+            label: 'Transaksi',
           ),
-          NavigationDestination(icon: Icon(Icons.pie_chart), label: 'Budget'),
-          NavigationDestination(icon: Icon(Icons.settings), label: 'Settings'),
+          NavigationDestination(icon: Icon(Icons.pie_chart), label: 'Anggaran'),
+          NavigationDestination(icon: Icon(Icons.settings), label: 'Pengaturan'),
         ],
       ),
     );
