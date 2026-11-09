@@ -217,13 +217,48 @@ class _SettingsPageState extends State<SettingsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Hai, Mahasiswa D3 Sistem Informasi dari Universitas Dinamika (STIKOM Surabaya)',
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                      // Foto profil + nama + peran (rata tengah)
+                      Center(
+                        child: Column(
+                          children: [
+                            ClipOval(
+                              child: SizedBox(
+                                width: 88,
+                                height: 88,
+                                child: Image.asset(
+                                  'assets/profile.jpg',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: Colors.blue.shade50,
+                                      child: const Icon(Icons.person, size: 44, color: Colors.blue),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            const Text('Kefiar Sakki Widyarinakit',
+                                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
+                            const SizedBox(height: 2),
+                            const Text('Mahasiswa D3 Sistem Informasi',
+                                style: TextStyle(color: Colors.grey, fontSize: 13)),
+                            const Text('Universitas Dinamika (STIKOM Surabaya)',
+                                style: TextStyle(color: Colors.grey, fontSize: 12)),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 12),
-                      // Chip akademik: NIM + kelas
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Hai! Saya pengembang aplikasi PocketWise untuk tugas UTS Pemrograman Mobile. '
+                        'Senang belajar Flutter dan membangun aplikasi yang bermanfaat.',
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      // Chip akademik
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -250,15 +285,16 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-                      // Baris ikon kontak
+                      const SizedBox(height: 16),
+                      // Ikon kontak
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
-                          Icon(Icons.email, size: 18, color: Colors.grey),
-                          SizedBox(width: 12),
-                          Icon(Icons.code, size: 18, color: Colors.grey), // GitHub
-                          SizedBox(width: 12),
-                          Icon(Icons.link, size: 18, color: Colors.grey), // LinkedIn
+                          Icon(Icons.email, size: 20, color: Colors.grey),
+                          SizedBox(width: 16),
+                          Icon(Icons.code, size: 20, color: Colors.grey), // GitHub
+                          SizedBox(width: 16),
+                          Icon(Icons.link, size: 20, color: Colors.grey), // LinkedIn
                         ],
                       ),
                     ],
