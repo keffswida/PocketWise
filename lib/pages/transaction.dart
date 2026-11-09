@@ -49,6 +49,8 @@ class _TransactionPageState extends State<TransactionPage> {
       return;
     }
     setState(() => _saving = true);
+    final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
     final t = Transaction(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       type: _type,
@@ -58,8 +60,22 @@ class _TransactionPageState extends State<TransactionPage> {
       date: _date,
     );
     await TransactionService.add(t);
-    if (!mounted) return;
-    Navigator.pop(context);
+    if (navigator.canPop()) {
+      navigator.pop();
+    } else {
+      // Dibuka sebagai tab (bukan di-push): jangan pop, cukup bersihkan form
+      _amountController.clear();
+      _noteController.clear();
+      _categoryController.text = 'Makanan';
+      setState(() {
+        _type = TransactionType.expense;
+        _date = DateTime.now();
+        _saving = false;
+      });
+      messenger.showSnackBar(
+        const SnackBar(content: Text('Transaksi disimpan')),
+      );
+    }
   }
 
   @override
