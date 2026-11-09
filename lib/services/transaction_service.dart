@@ -30,4 +30,16 @@ class TransactionService {
     items.add(t);
     await save(items);
   }
+
+  // Baca batas anggaran bulanan (default 1.000.000)
+  static Future<int> loadBudget() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('monthly_budget') ?? 1000000;
+  }
+
+  // Simpan batas anggaran bulanan
+  static Future<void> saveBudget(int value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('monthly_budget', value);
+  }
 }
