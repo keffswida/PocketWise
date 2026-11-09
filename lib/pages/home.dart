@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Transaction> _items = [];
+  int _savingsTarget = 2000000;
+  int _savingsSaved = 0;
   bool _loading = true;
 
   @override
@@ -24,9 +26,13 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _load() async {
     final data = await TransactionService.load();
+    final target = await TransactionService.loadSavingsTarget();
+    final saved = await TransactionService.loadSavingsSaved();
     if (!mounted) return;
     setState(() {
       _items = data..sort((a, b) => b.date.compareTo(a.date));
+      _savingsTarget = target;
+      _savingsSaved = saved;
       _loading = false;
     });
   }
@@ -34,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   int get _income => _items.where((t) => t.type == TransactionType.income).fold(0, (s, t) => s + t.amount);
   int get _expense => _items.where((t) => t.type == TransactionType.expense).fold(0, (s, t) => s + t.amount);
   int get _balance => _income - _expense;
+  double get _savingsProgress => _savingsTarget <= 0 ? 0 : (_savingsSaved / _savingsTarget).clamp(0.0, 1.0);
 
   String _rp(int v) {
     final s = v.abs().toString();
@@ -214,9 +221,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         const SizedBox(height: 16),
-        // Kartu tabungan (dummy)
+        // Kartu tabungan
         GestureDetector(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SavingsPage())),
+          onTap: () async {
+            await Navigator.push(context, MaterialPageRoute(builder: (context) => const SavingsPage()));
+            _load();
+          },
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(16),
@@ -246,20 +256,20 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Rp 500.000', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
-                    Text('25% tercapai', style: TextStyle(color: Colors.green, fontSize: 12, fontWeight: FontWeight.w600)),
+                    Text(_rp(_savingsSaved), style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                    Text('${(_savingsProgress * 100).round()}% tercapai', style: const TextStyle(color: Colors.green, fontSize: 12, fontWeight: FontWeight.w600)),
                   ],
                 ),
                 const SizedBox(height: 8),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: LinearProgressIndicator(value: 0.25, minHeight: 6, backgroundColor: Colors.green.shade50, color: Colors.green),
+                  child: LinearProgressIndicator(value: _savingsProgress, minHeight: 6, backgroundColor: Colors.green.shade50, color: Colors.green),
                 ),
                 const SizedBox(height: 4),
-                const Text('dari target Rp 2.000.000', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                Text('dari target ${_rp(_savingsTarget)}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
               ],
             ),
           ),

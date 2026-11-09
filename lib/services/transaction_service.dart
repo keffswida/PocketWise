@@ -42,4 +42,23 @@ class TransactionService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('monthly_budget', value);
   }
+
+  // Baca target tabungan (default 2.000.000)
+  static Future<int> loadSavingsTarget() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('savings_target') ?? 2000000;
+  }
+
+  // Baca tabungan terkumpul (default 0)
+  static Future<int> loadSavingsSaved() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('savings_saved') ?? 0;
+  }
+
+  // Simpan target dan tabungan terkumpul
+  static Future<void> saveSavings(int target, int saved) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('savings_target', target);
+    await prefs.setInt('savings_saved', saved);
+  }
 }
