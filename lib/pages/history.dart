@@ -64,7 +64,10 @@ class HistoryPage extends StatelessWidget {
           // Top bar: tombol kembali + logo
           Row(
             children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back),
+              ),
               const SizedBox(width: 4),
               const Icon(Icons.wallet, color: Colors.blue, size: 24),
               const SizedBox(width: 8),
