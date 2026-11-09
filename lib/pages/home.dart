@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pocketwise/pages/history.dart';
+import 'package:pocketwise/pages/savings.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -31,7 +33,7 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Home',
+                    'Beranda',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
                   ),
                   SizedBox(height: 4),
@@ -198,83 +200,95 @@ class HomePage extends StatelessWidget {
 
         // Kartu Tabungan //
         const SizedBox(height: 16),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.green.shade50,
-                      borderRadius: BorderRadius.circular(12),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SavingsPage()),
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.green.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.savings, color: Colors.green),
                     ),
-                    child: const Icon(Icons.savings, color: Colors.green),
-                  ),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tabungan',
-                          style: TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          'Sedikit demi sedikit, jadi puki.',
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                        ),
-                      ],
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tabungan',
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(height: 2),
+                          Text(
+                            'Sedikit demi sedikit, jadi bukit.',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const Icon(Icons.chevron_right, color: Colors.grey),
-                ],
-              ),
-              const SizedBox(height: 16),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Rp 500.000',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-                  ),
-                  Text(
-                    '25% tercapai',
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: LinearProgressIndicator(
-                  value: 0.25,
-                  minHeight: 6,
-                  backgroundColor: Colors.green.shade50,
-                  color: Colors.green,
+                    const Icon(Icons.chevron_right, color: Colors.grey),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'dari target Rp 2.000.000',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-            ],
+                const SizedBox(height: 16),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Rp 500.000',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    Text(
+                      '25% tercapai',
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: 0.25,
+                    minHeight: 6,
+                    backgroundColor: Colors.green.shade50,
+                    color: Colors.green,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'dari target Rp 2.000.000',
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            ),
           ),
         ),
+
         // ./ Kartu Tabungan //
 
         // "Transaksi terbaru" + "Lihat semua" //
@@ -287,7 +301,10 @@ class HomePage extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HistoryPage()),
+              ),
               child: const Text(
                 'Lihat semua',
                 style: TextStyle(

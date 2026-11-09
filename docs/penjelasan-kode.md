@@ -92,6 +92,15 @@
 - Kartu hijau "Langkah kecil setiap bulan" : Container hijau berisi ikon + judul hijau + angka bulanan + dua paragraf penjelas (angka dummy, logika pembagian menyusul)
 - `Center(child: Text(..., textAlign: TextAlign.center))` : Catatan kaki rata tengah
 
+## Kosakata Baru (Tahap 6 — Navigator.push / Navigator.pop)
+
+- `Navigator.push(context, route)` : Meletakkan halaman BARU di atas tumpukan halaman; layar otomatis berpindah dengan animasi geser dari kanan. Halaman yang di-push menutupi seluruh layar termasuk NavigationBar
+- `Navigator.pop(context)` : Membuang halaman paling atas dari tumpukan; layar kembali ke halaman di bawahnya. Dipakai di panah kembali halaman pendukung (dan otomatis oleh tombol back Android)
+- `MaterialPageRoute(builder: (context) => const HistoryPage())` : "Cetak biru" halaman yang mau dibuka; `builder` mengembalikan widget halamannya. `context` yang dikirim adalah `BuildContext` dari `build()`
+- `GestureDetector(onTap: () { ... })` : Membungkus widget apa pun agar bisa mendeteksi sentuhan; dipakai agar kartu Tabungan bisa ditekan. Tampilannya tidak berubah (tidak seperti tombol), tapi tingkah laku tap aktif
+- `() => Navigator.pop(context)` : Arrow function — cara singkat Dart menulis fungsi satu baris; sama artinya dengan `() { Navigator.pop(context); }`
+- `context` (BuildContext) : Lokasi widget ini di dalam pohon; dipakai Navigator untuk mencari `MaterialApp` dan tumpukan halamannya. Karena itu `Navigator.push` harus dipanggil dari dalam `build(BuildContext context)`
+
 ## Konsep Dasar
 
 - `MaterialApp` vs `Scaffold` : MaterialApp = level aplikasi, Scaffold = level cangkang yang menampung NavigationBar; halaman dipasang di dalamnya sebagai isi
